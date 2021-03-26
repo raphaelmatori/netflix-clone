@@ -35,7 +35,10 @@ $(document).ready(function () {
                             if (i.poster_path) {
                                 $(".genre_" + item.id).append(
                                     `<div class="item">
-                                    <img class="box-movie" src="https://image.tmdb.org/t/p/w500${i.poster_path}" />
+                                    <img class="box-movie"
+                                        src="https://image.tmdb.org/t/p/w500${i.poster_path}"
+                                        title="${i.overview}"
+                                    />
                                 </div>`
                                 );
                             }
