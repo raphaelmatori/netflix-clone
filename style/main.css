@@ -110,3 +110,7 @@ header nav a:hover {
 .carosel-movies .title {
     padding: 20px
 }
+
+.owl-item img {
+    cursor: pointer !important;
+}

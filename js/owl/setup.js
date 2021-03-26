@@ -35,9 +35,10 @@ $(document).ready(function () {
                             if (i.poster_path) {
                                 $(".genre_" + item.id).append(
                                     `<div class="item">
-                                    <img class="box-movie"
+                                    <img class="box-movie image_${i.id}"
                                         src="https://image.tmdb.org/t/p/w500${i.poster_path}"
                                         title="${i.overview}"
+                                        onClick="openVideo(${i.id})"
                                     />
                                 </div>`
                                 );
@@ -45,7 +46,7 @@ $(document).ready(function () {
                         })
 
                         $(`.genre_${item.id}`).owlCarousel({
-                            loop: true,
+                            loop: false,
                             margin: 10,
                             nav: false,
                             responsive: {
@@ -67,3 +68,39 @@ $(document).ready(function () {
 
         });
 });
+
+
+const openVideo = id => {
+    const videos = []
+    if (!$(".image_" + id).attr('data-first')) {
+        $(".image_" + id).attr('data-first', true);
+    }
+
+    if ($(".image_" + id).attr('data-first') != "false") {
+        fetch(`https://api.themoviedb.org/3/movie/${id}/videos`, {
+            method: 'get',
+            headers: new Headers({
+                'Authorization': 'Bearer ' + bearerToken,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            })
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                const aux = responseJson.results.filter(i => i.site === "YouTube");
+                videos.push(...aux);
+
+                if (videos.length > 0) {
+                    $(".image_" + id).attr('data-video-id', videos[0].key);
+                    $(".image_" + id).modalVideo();
+                    if ($(".image_" + id).attr('data-first') == "true") {
+                        $(".image_" + id).attr('data-first', false);
+                        $(".image_" + id).first().click();
+
+                    }
+                } else {
+                    alert("Desculpe-nos, não encontramos um vídeo disponível para esse título.")
+                }
+            });
+    }
+
+}
