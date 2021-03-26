@@ -103,6 +103,10 @@ header nav a:hover {
     display: block;
 }
 
+/* Carousel */
 .carousel-movies {
     margin-top: 5px;
+}
+.carosel-movies .title {
+    padding: 20px
 }
